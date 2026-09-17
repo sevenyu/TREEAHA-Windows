@@ -1,0 +1,74 @@
+:root {
+  /* 品牌色 —— 与 Mac 版 BrandColors 对齐 */
+  --brand-coral: #FF6E5F;
+  --brand-peach: #FFB88C;
+  --brand-gradient: linear-gradient(135deg, #FF6E5F 0%, #FFB88C 100%);
+
+  /* light 主题 */
+  --bg: #F6F7FA;
+  --bg-elevated: #FFFFFF;
+  --bg-glass: rgba(255, 255, 255, 0.6);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.16);
+  --fg: #16171B;
+  --fg-secondary: #6B6E75;
+  --fg-tertiary: #9EA0A6;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-elevated: 0 10px 30px rgba(0,0,0,0.10);
+}
+
+[data-theme="dark"] {
+  --bg: #0F1013;
+  --bg-elevated: #1B1D22;
+  --bg-glass: rgba(30, 32, 38, 0.6);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --fg: #F1F2F4;
+  --fg-secondary: #A9ABB2;
+  --fg-tertiary: #6B6E75;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-elevated: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", Roboto, sans-serif;
+  font-size: 13px;
+  color: var(--fg);
+  background: var(--bg);
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* Scrollbars —— 仅 WebKit */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--fg-tertiary); background-clip: padding-box; border: 2px solid transparent; }
+::-webkit-scrollbar-track { background: transparent; }
