@@ -53,8 +53,11 @@ jobs:
           $dst = "src-tauri/resources"
           New-Item -ItemType Directory -Force -Path $dst | Out-Null
           Invoke-WebRequest -Uri $url -OutFile pdfium.tgz
-          tar -xzf pdfium.tgz -C $dst bin/pdfium.dll --strip-components=1
-          # 打包后 pdfium.dll 会和 exe 同目录
+          # bblanchon 的 tgz 结构:bin/pdfium.dll + include/... + lib/...
+          # 解到 dst 后把 pdfium.dll 拉到 dst 根,tauri 打包时会拷到 exe 同目录
+          tar -xzf pdfium.tgz -C $dst bin/pdfium.dll
+          Move-Item -Force "$dst/bin/pdfium.dll" "$dst/pdfium.dll"
+          Remove-Item -Recurse -Force "$dst/bin"
           Get-ChildItem $dst
 
       - name: Build (Tauri)
