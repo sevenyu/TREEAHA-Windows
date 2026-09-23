@@ -46,7 +46,7 @@
   background: var(--brand-gradient);
   padding: 5px 14px;
   font-weight: 500;
-  box-shadow: 0 2px 6px rgba(255,110,95,0.35);
+  box-shadow: var(--shadow-brand);
 }
 .tb-btn.primary:hover { filter: brightness(1.05); }
 .tb-btn.primary:disabled {
@@ -80,7 +80,7 @@
 }
 .empty-hero.drag-active {
   border-color: var(--brand-coral);
-  background: rgba(255, 110, 95, 0.06);
+  background: var(--brand-gradient-soft);
 }
 .empty-hero h2 {
   margin: 0;
@@ -94,7 +94,7 @@
   color: white;
   background: var(--brand-gradient);
   font-weight: 500;
-  box-shadow: 0 4px 12px rgba(255,110,95,0.35);
+  box-shadow: var(--shadow-brand);
 }
 
 .grid-wrap {
@@ -120,7 +120,7 @@
   transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 .card:hover { transform: translateY(-1px); box-shadow: var(--shadow-elevated); }
-.card.selected { border-color: var(--brand-coral); box-shadow: 0 0 0 2px rgba(255,110,95,0.4); }
+.card.selected { border-color: var(--brand-coral); box-shadow: 0 0 0 2px rgba(255,92,107,0.4); }
 .card-thumb {
   height: 128px;
   background: var(--bg);
@@ -172,6 +172,7 @@
   font-size: 13px;
   opacity: 0;
   transition: opacity 0.15s;
+  z-index: 3;
 }
 .card:hover .card-remove { opacity: 1; }
 .card-status {
@@ -184,6 +185,8 @@
   color: white;
   font-weight: 600;
   font-size: 13px;
+  pointer-events: none;  /* 别拦截 × 按钮的点击 */
+  z-index: 1;
 }
 
 /* Inspector (right) */
@@ -241,7 +244,7 @@
   color: white;
   background: var(--brand-gradient);
   border-color: transparent;
-  box-shadow: 0 2px 6px rgba(255,110,95,0.35);
+  box-shadow: var(--shadow-brand);
 }
 
 .slider-row {

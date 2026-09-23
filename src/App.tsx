@@ -19,6 +19,23 @@ export default function App() {
     ensureVideoProgressSubscribed();
   }, []);
 
+  // 全局 Delete/Backspace:删除当前选中项。若焦点在输入框,跳过让它正常编辑。
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Delete" && e.key !== "Backspace") return;
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable) return;
+      const { selectedIds, removeSelected } = useStore.getState();
+      if (selectedIds.size > 0) {
+        e.preventDefault();
+        removeSelected();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   return (
     <div className="app-root">
       <Toolbar />

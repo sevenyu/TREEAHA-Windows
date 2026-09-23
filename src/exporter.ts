@@ -2,7 +2,7 @@
 // 目前只接了 image;其他类型走占位,标记为 failed。
 
 import { useStore } from "./store";
-import { compressImage, compressLottie, convertDocument, compressVideo, probeImage, subscribeVideoProgress } from "./ipc";
+import { compressImage, compressLottie, convertDocument, compressVideo, compressPdf, probeImage, subscribeVideoProgress } from "./ipc";
 import type { WorkItem, DocumentTargetFormat } from "./types";
 
 // 全局订阅视频进度事件(App 启动时 App.tsx 里 mount 一次即可)
@@ -71,6 +71,17 @@ async function runOne(item: WorkItem) {
         const target: DocumentTargetFormat = item.kind === "pdf"
           ? docOpts.pdfTargetFormat
           : docOpts.richTextTargetFormat;
+        // PDF → 压缩 PDF 单独走 pdfium(和 Mac 版一致);其他 doc 走 pandoc
+        if (item.kind === "pdf" && target === "pdf") {
+          const r = await compressPdf(item.path, {
+            preset: docOpts.pdfPreset,
+            manualQuality: docOpts.useManual ? docOpts.manualQuality : undefined,
+            manualMaxPixel: docOpts.useManual ? docOpts.manualMaxPixel : undefined,
+            outputDirectory: docOpts.outputDirectory,
+          });
+          updateItemStatus(item.id, { kind: "done", outputPath: r.outputPath, outputBytes: r.outputBytes });
+          break;
+        }
         const r = await convertDocument(item.path, {
           sourceKind: item.kind,
           target,

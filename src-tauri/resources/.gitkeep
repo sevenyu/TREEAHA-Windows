@@ -1,0 +1,2 @@
+This directory holds bundled runtime resources such as pdfium.dll on Windows.
+Files here are copied next to the executable at build time.

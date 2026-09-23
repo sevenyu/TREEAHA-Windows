@@ -5,11 +5,13 @@ pub mod lottie;
 pub mod document;
 pub mod video;
 pub mod concurrency;
+pub mod pdf;
 
 use crate::image_module::{ImageOptions, ExportResult as ImageExportResult, ProbeResult};
 use crate::lottie::{LottieOptions, ExportResult as LottieExportResult};
 use crate::document::{DocOptions, ExportResult as DocExportResult};
 use crate::video::{VideoOptions, ExportResult as VideoExportResult};
+use crate::pdf::{PdfCompressOptions, ExportResult as PdfExportResult};
 use crate::concurrency::{cpu_sem, video_sem};
 
 use tauri::{AppHandle, Emitter};
@@ -55,6 +57,23 @@ fn probe_ffmpeg() -> Option<String> {
     crate::video::locate_ffmpeg().map(|p| p.to_string_lossy().into_owned())
 }
 
+#[tauri::command]
+fn compress_pdf(source: String, opts: PdfCompressOptions) -> Result<PdfExportResult, String> {
+    let _g = cpu_sem().acquire();
+    crate::pdf::compress(&source, &opts).map_err(|e| format!("{e:#}"))
+}
+
+/// 前端检测 PDFium 库是否可用(未装时 UI 给指引)
+#[tauri::command]
+fn probe_pdfium() -> bool {
+    // 尝试加载,不真调用任何东西
+    pdfium_render::prelude::Pdfium::bind_to_system_library().is_ok()
+        || std::env::current_exe().ok()
+            .and_then(|p| p.parent().map(|p| p.to_path_buf()))
+            .and_then(|d| pdfium_render::prelude::Pdfium::bind_to_library(d.to_string_lossy().as_ref()).ok())
+            .is_some()
+}
+
 /// 视频压缩:阻塞跑,过程中通过 event 发进度。
 /// 前端调时应该显式传 id(即 WorkItem.id),配合 listen 该 event 更新对应卡片。
 #[tauri::command]
@@ -93,7 +112,9 @@ pub fn run() {
             convert_document,
             probe_pandoc,
             probe_ffmpeg,
+            probe_pdfium,
             compress_video,
+            compress_pdf,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

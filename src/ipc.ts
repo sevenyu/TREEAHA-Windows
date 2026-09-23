@@ -40,6 +40,21 @@ export async function convertDocument(source: string, opts: DocInvokeOptions): P
 export async function probePandoc(): Promise<string | null> {
   return invoke("probe_pandoc");
 }
+export async function probePdfium(): Promise<boolean> {
+  return invoke("probe_pdfium");
+}
+
+// —— PDF 压缩 ——
+export type PdfPreset = "light" | "recommended" | "deep";
+export interface PdfCompressInvokeOptions {
+  preset: PdfPreset;
+  manualQuality?: number;
+  manualMaxPixel?: number;
+  outputDirectory?: string;
+}
+export async function compressPdf(source: string, opts: PdfCompressInvokeOptions): Promise<RustExportResult> {
+  return invoke("compress_pdf", { source, opts });
+}
 
 // —— 视频 ——
 export async function probeFfmpeg(): Promise<string | null> {

@@ -46,6 +46,17 @@ jobs:
       - name: Install frontend deps
         run: pnpm install --frozen-lockfile
 
+      - name: Download PDFium
+        shell: pwsh
+        run: |
+          $url = "https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-win-x64.tgz"
+          $dst = "src-tauri/resources"
+          New-Item -ItemType Directory -Force -Path $dst | Out-Null
+          Invoke-WebRequest -Uri $url -OutFile pdfium.tgz
+          tar -xzf pdfium.tgz -C $dst bin/pdfium.dll --strip-components=1
+          # 打包后 pdfium.dll 会和 exe 同目录
+          Get-ChildItem $dst
+
       - name: Build (Tauri)
         run: pnpm tauri build
 

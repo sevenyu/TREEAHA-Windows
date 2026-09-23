@@ -1,33 +1,46 @@
 :root {
-  /* 品牌色 —— 与 Mac 版 BrandColors 对齐 */
-  --brand-coral: #FF6E5F;
-  --brand-peach: #FFB88C;
-  --brand-gradient: linear-gradient(135deg, #FF6E5F 0%, #FFB88C 100%);
+  /* 品牌色 —— 与 Mac 版 BrandColors.swift 严格对齐 */
+  --brand-pink:  #FF4FB8;
+  --brand-coral: #FF5C6B;
+  --brand-amber: #FFA952;
+  /* logo 同款对角渐变(左下 → 右上) */
+  --brand-gradient: linear-gradient(to top right, #FF4FB8, #FF5C6B, #FFA952);
+  /* 浅色 tint 版(hover/选中背景),对应 SwiftUI brandSoft */
+  --brand-gradient-soft: linear-gradient(
+    to top right,
+    rgba(255, 79, 184, 0.22),
+    rgba(255, 169, 82, 0.22)
+  );
 
-  /* light 主题 */
-  --bg: #F6F7FA;
-  --bg-elevated: #FFFFFF;
-  --bg-glass: rgba(255, 255, 255, 0.6);
+  /* light 主题 —— 更接近 Mac 版 macOS 14+ 的默认背景 */
+  --bg: #F5F5F7;
+  --bg-elevated: rgba(255, 255, 255, 0.72);   /* 玻璃感 */
+  --bg-elevated-solid: #FFFFFF;
+  --bg-glass: rgba(255, 255, 255, 0.55);
   --border: rgba(0, 0, 0, 0.08);
-  --border-strong: rgba(0, 0, 0, 0.16);
+  --border-strong: rgba(0, 0, 0, 0.14);
   --fg: #16171B;
   --fg-secondary: #6B6E75;
-  --fg-tertiary: #9EA0A6;
+  --fg-tertiary: #A0A2A8;
   --shadow-card: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06);
-  --shadow-elevated: 0 10px 30px rgba(0,0,0,0.10);
+  --shadow-elevated: 0 10px 30px rgba(0,0,0,0.12);
+  /* 品牌色阴影(粉→珊瑚·基调) */
+  --shadow-brand: 0 4px 14px rgba(255, 92, 107, 0.35);
 }
 
 [data-theme="dark"] {
-  --bg: #0F1013;
-  --bg-elevated: #1B1D22;
-  --bg-glass: rgba(30, 32, 38, 0.6);
+  --bg: #0E0F13;
+  --bg-elevated: rgba(30, 32, 38, 0.72);
+  --bg-elevated-solid: #1B1D22;
+  --bg-glass: rgba(30, 32, 38, 0.55);
   --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-strong: rgba(255, 255, 255, 0.14);
   --fg: #F1F2F4;
   --fg-secondary: #A9ABB2;
   --fg-tertiary: #6B6E75;
   --shadow-card: 0 1px 2px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.4);
   --shadow-elevated: 0 10px 30px rgba(0,0,0,0.6);
+  --shadow-brand: 0 4px 14px rgba(255, 79, 184, 0.35);
 }
 
 * { box-sizing: border-box; }

@@ -58,6 +58,7 @@ interface Store {
   // —— actions ——
   addItems(items: WorkItem[]): void;
   removeItem(id: string): void;
+  removeSelected(): void;
   clearItems(): void;
   toggleSelection(id: string, extend: boolean): void;
   clearSelection(): void;
@@ -121,6 +122,13 @@ export const useStore = create<Store>((set, get) => ({
   removeItem: (id) => set(s => {
     const next = new Set(s.selectedIds); next.delete(id);
     return { items: s.items.filter(i => i.id !== id), selectedIds: next };
+  }),
+  removeSelected: () => set(s => {
+    if (s.selectedIds.size === 0) return {};
+    return {
+      items: s.items.filter(i => !s.selectedIds.has(i.id)),
+      selectedIds: new Set(),
+    };
   }),
   clearItems: () => set({ items: [], selectedIds: new Set() }),
 
